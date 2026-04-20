@@ -1,6 +1,7 @@
 CXX=clang++
 CXXFLAGS=-std=c++23 -Werror -Wsign-conversion
 TIDY_FLAGS=-checks=bugprone-*,-bugprone-easily-swappable-parameters,clang-analyzer-*,cppcoreguidelines-*,performance-*,portability-*,readability-* --warnings-as-errors=*
+TIDY_CONFIG=-config='{CheckOptions: [{key: cppcoreguidelines-special-member-functions.AllowMissingMoveFunctions, value: true}]}'
 TIDY_EXCLUDE=test.cpp StudentTest.cpp
 
 # Header-only templates — no .cpp files for classes
@@ -33,7 +34,7 @@ main.o: main.cpp
 	$(CXX) $(CXXFLAGS) --compile main.cpp -o main.o
 
 tidy:
-	clang-tidy $(filter-out $(TIDY_EXCLUDE), $(wildcard *.cpp)) $(TIDY_FLAGS) -- $(CXXFLAGS)
+	clang-tidy $(filter-out $(TIDY_EXCLUDE), $(wildcard *.cpp) $(wildcard *.hpp)) $(TIDY_FLAGS) $(TIDY_CONFIG) -- $(CXXFLAGS)
 
 clean:
 	rm -f *.o demo test
