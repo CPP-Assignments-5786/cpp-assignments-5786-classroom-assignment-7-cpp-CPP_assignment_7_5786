@@ -16,18 +16,38 @@
 
 using namespace containers;
 
+namespace {
+constexpr int kTen = 10;
+constexpr int kTwenty = 20;
+constexpr int kThirty = 30;
+constexpr int kForty = 40;
+constexpr int kFifty = 50;
+constexpr int kSixty = 60;
+constexpr int kSeventy = 70;
+constexpr int kNinetyNine = 99;
+constexpr int kOneHundred = 100;
+constexpr int kTwoHundred = 200;
+constexpr int kThreeHundred = 300;
+constexpr int kFive = 5;
+
+constexpr double kPiApprox = 3.14;
+constexpr double kEulerApprox = 2.71;
+constexpr double kSqrtTwoApprox = 1.41;
+}
+
 int main() {
+    try {
     std::cout << "===== Generic Container Library Demo =====\n\n";
 
     // ---- Section 1: Container basics ----
     std::cout << "--- Container<int> Basics ---\n";
 
     Container<int> nums;
-    nums.add(10);
-    nums.add(20);
-    nums.add(30);
-    nums.add(40);
-    nums.add(50);   // triggers resize (default capacity is 4)
+    nums.add(kTen);
+    nums.add(kTwenty);
+    nums.add(kThirty);
+    nums.add(kForty);
+    nums.add(kFifty);   // triggers resize (default capacity is 4)
 
     std::cout << "Count: " << nums.getCount() << "\n";
     // Expected: Count: 5
@@ -70,8 +90,8 @@ int main() {
     words.add("great");
 
     std::cout << "Words: ";
-    for (const std::string& w : words) {
-        std::cout << w << " ";
+    for (const std::string& wordValue : words) {
+        std::cout << wordValue << " ";
     }
     std::cout << "\n";
     // Expected: Words: hello world templates are great
@@ -95,10 +115,10 @@ int main() {
     // ---- Section 5: Search & Count ----
     std::cout << "\n--- Search & Count ---\n";
 
-    std::cout << "find(nums, 30): " << find(nums, 30) << "\n";
+    std::cout << "find(nums, 30): " << find(nums, kThirty) << "\n";
     // Expected: find(nums, 30): 2
 
-    std::cout << "find(nums, 99): " << find(nums, 99) << "\n";
+    std::cout << "find(nums, 99): " << find(nums, kNinetyNine) << "\n";
     // Expected: find(nums, 99): -1
 
     Container<int> repeated;
@@ -111,10 +131,10 @@ int main() {
     std::cout << "count(repeated, 2): " << count(repeated, 2) << "\n";
     // Expected: count(repeated, 2): 3
 
-    std::cout << "contains(nums, 20): " << contains(nums, 20) << "\n";
+    std::cout << "contains(nums, 20): " << contains(nums, kTwenty) << "\n";
     // Expected: contains(nums, 20): 1
 
-    std::cout << "contains(nums, 99): " << contains(nums, 99) << "\n";
+    std::cout << "contains(nums, 99): " << contains(nums, kNinetyNine) << "\n";
     // Expected: contains(nums, 99): 0
 
     // ---- Section 6: Aggregates ----
@@ -130,9 +150,9 @@ int main() {
     // Expected: max(nums): 50
 
     Container<double> doubles;
-    doubles.add(3.14);
-    doubles.add(2.71);
-    doubles.add(1.41);
+    doubles.add(kPiApprox);
+    doubles.add(kEulerApprox);
+    doubles.add(kSqrtTwoApprox);
 
     std::cout << "sum(doubles): " << sum(doubles) << "\n";
     // Expected: sum(doubles): 7.26
@@ -148,14 +168,14 @@ int main() {
     vals.add(2);
     vals.add(3);
     vals.add(4);
-    vals.add(5);
+    vals.add(kFive);
 
-    transform(vals, [](int& x) { x *= 2; });
+    transform(vals, [](int& valueRef) { valueRef *= 2; });
     print(vals);
     std::cout << "\n";
     // Expected: [2, 4, 6, 8, 10]
 
-    Container<int> evens = filter(vals, [](const int& x) { return x % 4 == 0; });
+    Container<int> evens = filter(vals, [](const int& valueRef) { return valueRef % 4 == 0; });
     print(evens);
     std::cout << "\n";
     // Expected: [4, 8]
@@ -185,14 +205,14 @@ int main() {
     std::cout << "\n--- Copy & Assignment ---\n";
 
     Container<int> numsCopy(nums);
-    numsCopy.add(60);
+    numsCopy.add(kSixty);
     std::cout << "Original count: " << nums.getCount()
               << ", Copy count: " << numsCopy.getCount() << "\n";
     // Expected: Original count: 5, Copy count: 6
 
     Container<int> numsAssign;
     numsAssign = nums;
-    numsAssign.add(70);
+    numsAssign.add(kSeventy);
     std::cout << "Original count: " << nums.getCount()
               << ", Assigned count: " << numsAssign.getCount() << "\n";
     // Expected: Original count: 5, Assigned count: 6
@@ -201,9 +221,9 @@ int main() {
     std::cout << "\n--- Stack<int> ---\n";
 
     Stack<int> stack;
-    stack.push(100);
-    stack.push(200);
-    stack.push(300);
+    stack.push(kOneHundred);
+    stack.push(kTwoHundred);
+    stack.push(kThreeHundred);
 
     std::cout << "Stack size: " << stack.size() << "\n";
     // Expected: Stack size: 3
@@ -252,9 +272,9 @@ int main() {
     std::cout << "\n--- Queue<int> ---\n";
 
     Queue<int> queue;
-    queue.enqueue(10);
-    queue.enqueue(20);
-    queue.enqueue(30);
+    queue.enqueue(kTen);
+    queue.enqueue(kTwenty);
+    queue.enqueue(kThirty);
 
     std::cout << "Queue size: " << queue.size() << "\n";
     // Expected: Queue size: 3
@@ -304,7 +324,7 @@ int main() {
     }
 
     try {
-        nums.get(100);
+        nums.get(kOneHundred);
     } catch (const std::out_of_range& e) {
         std::cout << "Container get error: " << e.what() << "\n";
         // Expected: Container get error: Index out of range
@@ -313,4 +333,11 @@ int main() {
     std::cout << "\n===== Demo Complete =====\n";
 
     return 0;
+    } catch (const std::exception& exceptionValue) {
+        std::cerr << "Unhandled exception: " << exceptionValue.what() << "\n";
+        return 1;
+    } catch (...) {
+        std::cerr << "Unhandled non-standard exception\n";
+        return 1;
+    }
 }
